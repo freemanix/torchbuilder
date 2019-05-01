@@ -13,10 +13,10 @@ RUN apt-get -y install g++ git libgflags-dev libgoogle-glog-dev\
 
 # Install CMake 3.14
 
-ARG CMAKE=cmake-3.14.0-Linux-x86_64
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.14.0/cmake-3.14.0-Linux-x86_64.sh
-RUN echo y | sh ${CMAKE}.sh && rm ${CMAKE}.sh
-RUN cd ${CMAKE} && cp -ap bin /usr && cp -ap share /usr
+ARG CMAKE=cmake-3.14.1.tar.gz
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.14.1/${CMAKE}
+RUN tar xvzf ${CMAKE} && cd cmake* && ./bootstrap --parallel=$(nproc)
+RUN cd cmake* && make -j$(nproc) && make install
 
 # Intel MKL installation
 
