@@ -28,8 +28,9 @@ RUN rm /opt/intel/mkl/lib/intel64/*.so
 
 # Download and build libtorch with MKL support
 
+ENV TORCH_CUDA_ARCH_LIST="5.2 6.0 6.1 7.0 7.5"
+ENV TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 RUN git clone --recurse-submodules -j8 https://github.com/pytorch/pytorch.git
-RUN export TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0 7.5+PTX" && export TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 RUN cd pytorch && mkdir build && cd build && BUILD_TEST=OFF USE_NCCL=OFF python3 ../tools/build_libtorch.py
 
 # Prepare built package
